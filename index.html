@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Sports Championship</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <div class="profile-icon"></div>
+<div class="club-icon"></div>
+                <div class="trophy-icon">🏆</div>
+                <div class="header-title">House Sports Championship</div>
+            </div>
+            <div class="nav-tabs">
+                <a class="nav-tab" id="scores-tab">Scores</a>
+                <a class="nav-tab" id="leaderboard-tab">Leaderboard</a>
+                <a class="nav-tab" id="moments-tab">Winning Moments</a>
+            </div>
+        </header>
+
+        <div id="scores-page" class="page">
+            <div class="page-title">
+                <span class="page-title-icon">📊</span>
+                <span>Sports Scores</span>
+            </div>
+
+            <div class="sports-grid" id="sports-container">
+                <!-- Sports cards will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <div id="leaderboard-page" class="page" style="display: none;">
+            <div class="page-title">
+                <span class="page-title-icon">⭐</span>
+                <span>Overall House Rankings</span>
+            </div>
+
+            <div class="rankings-grid" id="rankings-container">
+                <!-- Ranking cards will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <div id="moments-page" class="page" style="display: none;">
+            <div class="page-title">
+                <span class="page-title-icon">📸</span>
+                <span>Winning Moments</span>
+            </div>
+
+            <div class="moments-grid" id="moments-container">
+            </div>
+        </div>
+
+        <footer>
+            <span>Created by: Bandaranayake College Coding Club</span>
+        </footer>
+    </div>
+
+    <script>
+        const sportsData = {
+            "sports": [
+                {
+                    "id": "Badmiton",
+                    "name": "Badmiton",
+                    "venue": "Makro Badmiton Court",
+                     "isLive": false,
+                    "scores": [
+                        { "house": "Gamunu", "score": 5 },
+                        { "house": "Tissa", "score": 6 },
+                        { "house": "Parakram", "score": 12.5 },
+                        { "house": "Vijaya", "score": 7 }
+                    ]
+                },
+                {
+                    "id": "Chess",
+                    "name": "Chess",
+                    "venue": "Grade 07 Section",
+                     "isLive": false,
+                    "scores": [
+                        { "house": "Gamunu", "score": 10 },
+                        { "house": "Tissa", "score": 96 },
+                        { "house": "Parakram", "score": 15 },
+                        { "house": "Vijaya", "score": 97 }
+                    ]
+                },
+                {
+                    "id": "Vollyball",
+                    "name": "Vollyball",
+                    "venue": "Main Ground",
+                     "isLive": false,
+                    "scores": [
+                        { "house": "Gamunu", "score": 5 },
+                        { "house": "Tissa", "score": 96 },
+                        { "house": "Parakram", "score": 0 },
+                        { "house": "Vijaya", "score": 97 }
+                    ]
+                },
+                {
+                    "id": "Elle",
+                    "name": "Elle",
+                    "venue": "Main Ground",
+                     "isLive": false,
+                    "scores": [
+                        { "house": "Gamunu", "score": 90 },
+                        { "house": "Tissa", "score": 96 },
+                        { "house": "Parakram", "score": 79 },
+                        { "house": "Vijaya", "score": 97 }
+                    ]
+                },
+                {
+                    "id": "Hockey",
+                    "name": "Hockey",
+                    "venue": "Main Ground",
+                     "isLive": false,
+                    "scores": [
+                        { "house": "Gamunu", "score": 0 },
+                        { "house": "Tissa", "score": 96 },
+                        { "house": "Parakram", "score": 5 },
+                        { "house": "Vijaya", "score": 97 }
+                    ]
+                },
+                {
+                    "id": "Softball",
+                    "name": "Softball",
+                    "venue": "Main Ground",
+                     "isLive": false,
+                    "scores": [
+                        { "house": "Gamunu", "score": 15 },
+                        { "house": "Tissa", "score": 96 },
+                        { "house": "Parakram", "score": 0 },
+                        { "house": "Vijaya", "score": 97 }
+                    ]
+                },
+                {
+                    "id": "Basketball",
+                    "name": "BasketBall",
+                    "venue": "BasketBall Court",
+                    "isLive": false,
+                    "scores": [
+                        { "house": "Gamunu", "score": 95 },
+                        { "house": "Tissa", "score": 88 },
+                        { "house": "Parakram", "score": 95 },
+                        { "house": "Vijaya", "score": 92 }
+                    ]
+                }
+
+            ]
+        };
+
+        const momentsData = {
+            "moments": [
+                {
+                    "id": "Elle-final",
+                    "title": "Elle Championship Final",
+                    "description": "Elle secures a stunning win in the final moments",
+                    "house": "Gamunu",
+                    "image": "https://uploadimage.io/images/2025/02/26/481293868_1198761235586481_6186605271315011251_n.jpg"
+                },
+                {
+                    "id": "BasketBall-final",
+                    "title": "BasketBall Champions",
+                    "description": "Epic basketball showdown ends with a buzzer-beater win",
+                    "house": "Tissa",
+                    "image": "https://raw.githubusercontent.com/ALEX-ID-LK/sportmeets/refs/heads/main//480881746_1198555862273685_2223825316418136102_n.jpg"
+                }
+            ]
+        };
+
+        const scoresTab = document.getElementById('scores-tab');
+        const leaderboardTab = document.getElementById('leaderboard-tab');
+        const momentsTab = document.getElementById('moments-tab');
+        
+        const scoresPage = document.getElementById('scores-page');
+        const leaderboardPage = document.getElementById('leaderboard-page');
+        const momentsPage = document.getElementById('moments-page');
+        
+        const sportsContainer = document.getElementById('sports-container');
+        const rankingsContainer = document.getElementById('rankings-container');
+        const momentsContainer = document.getElementById('moments-container');
+        function showPage(pageElement) {
+            scoresPage.style.display = 'none';
+            leaderboardPage.style.display = 'none';
+            momentsPage.style.display = 'none';
+            
+            pageElement.style.display = 'block';
+        }
+
+        function setActiveTab(tab) {
+            scoresTab.classList.remove('active');
+            leaderboardTab.classList.remove('active');
+            momentsTab.classList.remove('active');
+            
+            tab.classList.add('active');
+        }
+
+        scoresTab.addEventListener('click', () => {
+            showPage(scoresPage);
+            setActiveTab(scoresTab);
+        });
+
+        leaderboardTab.addEventListener('click', () => {
+            showPage(leaderboardPage);
+            setActiveTab(leaderboardTab);
+            renderRankings();
+        });
+
+        momentsTab.addEventListener('click', () => {
+            showPage(momentsPage);
+            setActiveTab(momentsTab);
+        });
+        setActiveTab(scoresTab);
+        function getMaxScore(scores) {
+            return Math.max(...scores.map(item => item.score));
+        }
+        function renderSports() {
+            sportsContainer.innerHTML = '';
+            
+            sportsData.sports.forEach(sport => {
+                const maxScore = getMaxScore(sport.scores);
+                
+                const sportCard = document.createElement('div');
+                sportCard.className = 'sport-card';
+                
+                let sportContent = `
+                    <div class="sport-header">
+                        <div class="sport-title">${sport.name}</div>
+                        <div class="sport-subtitle">${sport.venue}</div>
+                        ${sport.isLive ? '<div class="live-tag"><div class="live-indicator"></div>LIVE</div>' : ''}
+                    </div>
+                `;
+                
+                sport.scores.forEach(score => {
+                    const percentage = (score.score / maxScore) * 100;
+                    
+                    sportContent += `
+                        <div class="score-item">
+                            <div class="score-row">
+                                <div class="house-name ${score.house.toLowerCase()}">${score.house}</div>
+                                <div class="house-score">${score.score}</div>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar ${score.house.toLowerCase()}" style="width: ${percentage}%"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                sportCard.innerHTML = sportContent;
+                sportsContainer.appendChild(sportCard);
+            });
+        }
+
+        function calculateTotalPoints() {
+            const houses = {
+                "Vijaya": { total: 0, color: "vijaya" },
+                "Tissa": { total: 0, color: "tissa" },
+                "Gamunu": { total: 0, color: "gamunu" },
+                "Parakram": { total: 0, color: "parakram" }
+            };
+            
+            sportsData.sports.forEach(sport => {
+                sport.scores.forEach(score => {
+                    houses[score.house].total += score.score;
+                });
+            });
+            
+            return Object.entries(houses)
+                .map(([name, data]) => ({ 
+                    name, 
+                    total: data.total, 
+                    color: data.color 
+                }))
+                .sort((a, b) => b.total - a.total);
+        }
+        function renderRankings() {
+            const rankings = calculateTotalPoints();
+            rankingsContainer.innerHTML = '';
+            
+            rankings.forEach((house, index) => {
+                const rankCard = document.createElement('div');
+                rankCard.className = `ranking-card ${index === 0 ? 'highlighted' : ''}`;
+                
+                rankCard.innerHTML = `
+                    <div class="rank-number">Rank #${index + 1}</div>
+                    <div class="house-ranking ${house.color}">
+                        <span class="house-icon">🏠</span>
+                        <span>${house.name}</span>
+                    </div>
+                    <div class="total-score">${house.total}</div>
+                `;
+                
+                rankingsContainer.appendChild(rankCard);
+            });
+        }
+        function renderMoments() {
+            momentsContainer.innerHTML = '';
+            
+            momentsData.moments.forEach(moment => {
+                const momentCard = document.createElement('div');
+                momentCard.className = 'moment-card';
+               
+                  const imagePath = moment.image || `/api/placeholder/400/200`;
+                const houseColor = moment.house.toLowerCase();
+                
+                momentCard.innerHTML = `
+                    <img src="${imagePath}" alt="${moment.title}" class="moment-image">
+                    <div class="moment-content">
+                        <div class="moment-title">${moment.title}</div>
+                        <div class="moment-description">${moment.description}</div>
+                        <div class="moment-house">
+                            <span class="house-icon ${houseColor}">🏠</span>
+                            <span class="moment-house-name ${houseColor}">${moment.house} House</span>
+                        </div>
+                    </div>
+                `;
+                
+                momentsContainer.appendChild(momentCard);
+            });
+        }
+        function initApp() {
+            renderSports();
+            renderRankings();
+            renderMoments();
+       
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    const sportIndex = Math.floor(Math.random() * sportsData.sports.length);
+                    const scoreIndex = Math.floor(Math.random() * 4);
+                    const sport = sportsData.sports[sportIndex];
+                    
+                    if (sport.isLive) {
+                        const changeAmount = Math.floor(Math.random() * 5) - 2; // -2 to +2
+                        sport.scores[scoreIndex].score = Math.max(50, sport.scores[scoreIndex].score + changeAmount);
+                        
+                        renderSports();
+                        // Also update rankings if leaderboard is visible
+                        if (leaderboardPage.style.display !== 'none') {
+                            renderRankings();
+                        }
+                    }
+                }
+            }, 3000);
+        }
+        initApp();
+    </script>
+</body>
+</html>
